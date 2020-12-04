@@ -112,6 +112,7 @@ function freeze(){
         currentPosition = 4;
         draw();
         addScore();
+        gameOver();
     }
 }
 
