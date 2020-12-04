@@ -182,6 +182,7 @@ function rotate() {
 // start/pause button
 
 startBtn.addEventListener('click', () => {
+    myAudio.play();
     if (timerId) {
       clearInterval(timerId)
       timerId = null
@@ -233,6 +234,6 @@ else
         this.play();
     }, false);
 }
-myAudio.play();
+
 
 })
