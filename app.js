@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded',()=>{
+
+
 const width=10;
 const grid=document.querySelector('.grid');
 for(var i=0;i<200;i++){grid.appendChild(document.createElement('div'));}
@@ -217,6 +219,19 @@ startBtn.addEventListener('click', () => {
     }
   }
 
-
+//muuusic
+myAudio = new Audio('tetris.mp3'); 
+if (typeof myAudio.loop == 'boolean')
+{
+    myAudio.loop = true;
+}
+else
+{
+    myAudio.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+    }, false);
+}
+myAudio.play();
 
 })
