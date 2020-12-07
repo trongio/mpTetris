@@ -211,11 +211,15 @@ startBtn.addEventListener('click', () => {
         row.forEach(index => {
           squares[index].classList.remove('taken')
           squares[index].classList.remove('tetromino')
+          colors.forEach(color => {
+            squares[index].classList.remove(color)
+          });
+         
           squares[index].style.backgroundColor = ''
         })
         const squaresRemoved = squares.splice(i, width)
         squares = squaresRemoved.concat(squares)
-        squares.forEach(cell => grid.appendChild(cell).classList.add('bottom'))
+        squares.forEach(cell => grid.appendChild(cell))
       }
     }
   }
