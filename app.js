@@ -4,19 +4,12 @@ document.addEventListener('DOMContentLoaded',()=>{
 const width=10;
 const grid=document.querySelector('.grid');
 for(var i=0;i<200;i++){grid.appendChild(document.createElement('div'));}
-for(var i=0;i<10;i++){grid.appendChild(document.createElement('div')).classList.add('taken','bottom');}
+for(var i=0;i<10;i++){grid.appendChild(document.createElement('div')).classList.add('taken');}
 let squares=Array.from(document.querySelectorAll('.grid div'));
 const scoreDisplay=document.getElementById("score");
 const startBtn=document.getElementById("start-button");
 let timerId
 let score =0
-const colors = [
-    'orange',
-    'red',
-    'purple',
-    'green',
-    'blue'
-  ]
 
 // Figures
 
@@ -69,7 +62,7 @@ let current = theTetrominoes[random][currentRotation];
 
 function draw(){
     current.forEach(index =>{
-        squares[currentPosition+index].classList.add('tetromino',colors[random]);
+        squares[currentPosition+index].classList.add('tetromino');
     })
 }
 
@@ -77,7 +70,7 @@ function draw(){
 
 function undraw(){
     current.forEach(index =>{
-        squares[currentPosition+index].classList.remove('tetromino',colors[random])
+        squares[currentPosition+index].classList.remove('tetromino')
     })
 }
 
@@ -215,7 +208,7 @@ startBtn.addEventListener('click', () => {
         })
         const squaresRemoved = squares.splice(i, width)
         squares = squaresRemoved.concat(squares)
-        squares.forEach(cell => grid.appendChild(cell).classList.add('bottom'))
+        squares.forEach(cell => grid.appendChild(cell))
       }
     }
   }

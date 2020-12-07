@@ -13,7 +13,7 @@ body {
 .grid {
     width: 200px;
     height: 400px;
-    background-color: none;
+    background-color: yellow;
     display: flex;
     flex-wrap: wrap;
 
@@ -25,26 +25,5 @@ body {
 
 
 .tetromino {
-    // background-color: royalblue;
+    background-color: royalblue;
 }
-
-.orange{
-    background-image: url(images/peach_block.png);
-}
-.red{
-    background-image: url(images/pink_block.png);
-}
-.purple{
-    background-image: url(images/purple_block.png);
-}
-.green{
-    background-image: url(images/green_block.png);
-} 
-.blue{
-    background-image: url(images/blue_block.png);
-}
-
-.bottom {
-    background-image: url(images/navy_block.png);
-}
-
