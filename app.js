@@ -1,4 +1,8 @@
-document.addEventListener('DOMContentLoaded',()=>{
+import connectionManager from './client/connectionManager.js';
+const connection=new connectionManager;
+
+document.addEventListener('DOMContentLoaded',(tetrisManager)=>{
+connection.connect('ws://localhost:9000');
 
 
 const width=10;
@@ -10,6 +14,7 @@ const scoreDisplay=document.getElementById("score");
 const startBtn=document.getElementById("start-button");
 let timerId
 let score =0
+var tetris=null;
 const colors = [
     'orange',
     'red',
@@ -105,7 +110,9 @@ function control(e) {
 function moveDown() {
     undraw();
     currentPosition +=width;
-    draw()
+    draw();
+    tetris=document.getElementById(connection.getMe()).innerHTML;
+    connection.setTetris(tetris);
     freeze()
 }
 
@@ -233,7 +240,7 @@ startBtn.addEventListener('click', () => {
   }
 
 //muuusic
-myAudio = new Audio('tetris.mp3'); 
+var myAudio = new Audio('tetris1.mp3'); 
 if (typeof myAudio.loop == 'boolean')
 {
     myAudio.loop = true;

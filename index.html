@@ -9,12 +9,15 @@
 
 </head>
 <body>
-    <h3>Score: <span id="score">0</span></h3>
     <button class="btn btn-primary" id="start-button">Start/Pause</button>
 
-    <div class="grid"></div>
+    <section>
+        <h3>Score: <span id="score">0</span></h3>
 
-
-    <script src="app.js"></script>
+        <div class="grid"></div>
+    </section>
+    
+    <script type="module" src="client/connectionManager.js"></script>
+    <script type="module" defer src="app.js"></script>
 </body>
 </html>
