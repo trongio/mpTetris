@@ -24,15 +24,18 @@ class ConnectionManager {
 
     initSession(){
         const sessionId= window.location.hash.split('#')[1];
+        const state = this.localTetris.serialize();
         if(sessionId){
             this.send({
                 type:'join-session',
                 id: sessionId,
+                state,
             })
         }
         else{
             this.send({
                 type:'create-session',
+                state,
             });
         }
     }
@@ -97,16 +100,17 @@ class ConnectionManager {
 
     updateManager(peers){
         const me = peers.you;
-        const clients = peers.clients.filter(id => me !== id);
-        clients.forEach(id => {
-            if (!this.peers.has(id)) {
+        const clients = peers.clients.filter(client => me !== client.id);
+        clients.forEach(client => {
+            if (!this.peers.has(client.id)) {
                 const tetris = this.tetrisManager.createPlayer();
-                this.peers.set(id, tetris);
+                tetris.unserialize(client.state);
+                this.peers.set(client.id, tetris);
             }
         });
 
         [...this.peers.entries()].forEach(([id, tetris]) => {
-            if (clients.indexOf(id)===-1) {
+            if (!clients.some(client => client.id === id)) {
                 this.tetrisManager.removePlayer(tetris);
                 this.peers.delete(id);
             }

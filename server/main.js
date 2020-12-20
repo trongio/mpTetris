@@ -31,17 +31,22 @@ function getSession(id){
     return sessions.get(id);
 }
 
-function broadCastSession(session){
-    const clients=[...session.clients];
-    clients.forEach(client =>{
+function broadCastSession(session) {
+    const clients = [...session.clients];
+    clients.forEach(client => {
         client.send({
             type: 'session-broadcast',
-            peers:{
+            peers: {
                 you: client.id,
-                clients: clients.map(client=>client.id),
-            }
-        })
-    })
+                clients: clients.map(client => {
+                    return {
+                        id: client.id,
+                        state: client.state,
+                    }
+                }),
+            },
+        });
+    });
 }
 
 server.on('connection', conn => {
@@ -56,6 +61,7 @@ server.on('connection', conn => {
         if (data.type==='create-session'){
             const session=createSession();
             session.join(client);
+            client.state=data.state;
             client.send({
                 type: 'session-created',
                 id: session.id,
@@ -64,9 +70,12 @@ server.on('connection', conn => {
         }else if(data.type==='join-session'){
             const session=getSession(data.id) || createSession(data.id);
             session.join(client);
+            client.state=data.state;
 
             broadCastSession(session);
-        }else if(data.type==='state-update'){
+        }else if (data.type === 'state-update') {
+            const [key, value] = data.state;
+            client.state[data.fragment][key] = value;
             client.broadcast(data);
         }
     })
