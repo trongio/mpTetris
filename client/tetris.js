@@ -14,13 +14,6 @@ class Tetris
             this.updateScore(score);
         });
 
-        this.player.events.listen('pos', pos =>{
-            console.log('payer pos changed to',pos);
-        });
-
-        this.player.events.listen('matrix', matrix =>{
-            console.log('payer matrix changed to',matrix);
-        });
 
         this.colors = [
             null,

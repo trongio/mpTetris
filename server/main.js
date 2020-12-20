@@ -23,7 +23,6 @@ function createSession(id=createId()){
         throw new Error(`session ${id} already exists`);
     }
     const session=new Session(id);
-    console.log('creating session',session);
     sessions.set(id,session);
     return session;
 }
@@ -61,14 +60,15 @@ server.on('connection', conn => {
                 type: 'session-created',
                 id: session.id,
             });
-            console.log(sessions);
+            
         }else if(data.type==='join-session'){
             const session=getSession(data.id) || createSession(data.id);
             session.join(client);
 
             broadCastSession(session);
+        }else if(data.type==='state-update'){
+            client.broadcast(data);
         }
-        console.log('sessions',sessions);
     })
 
     conn.on('close',()=>{
@@ -79,7 +79,7 @@ server.on('connection', conn => {
         }
         if(session.clients.size===0){
             sessions.delete(session.id);
-            console.log(sessions);
+            
         }
 
         broadCastSession(session);
