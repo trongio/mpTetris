@@ -1,6 +1,8 @@
 class ConnectionManager {
-    constructor() {
+    constructor(tetrisManager) {
         this.conn=null;
+        this.peers= new Map;
+        this.tetrisManager=tetrisManager;
     }
 
     connect(address) {
@@ -47,6 +49,17 @@ class ConnectionManager {
             this.updateManager(data.peers);
         }
 
+    }
+
+    updateManager(peers){
+        const me = peers.you;
+        const clients = peers.clients.filter(client => me !== client.id);
+        clients.forEach(client => {
+            if (!this.peers.has(client.id)) {
+                const tetris = this.tetrisManager.createPlayer();
+                this.peers.set(client.id, tetris);
+            }
+        });
     }
 
 }

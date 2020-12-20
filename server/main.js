@@ -14,6 +14,10 @@ function createId(len = 6, chars = 'abcdefghjkmnopqrstvwxyz01234567890') {
     return id;
 }
 
+function createClient(conn,id=createId()){
+    return new Client(conn,id);
+}
+
 function createSession(id=createId()){
     if(sessions.has(id)){
         throw new Error(`session ${id} already exists`);
@@ -28,9 +32,22 @@ function getSession(id){
     return sessions.get(id);
 }
 
+function broadCastSession(session){
+    const clients=[...session.clients];
+    clients.forEach(client =>{
+        client.send({
+            type: 'session-broadcast',
+            peers:{
+                you: client.id,
+                clients: clients.map(client=>client.id),
+            }
+        })
+    })
+}
+
 server.on('connection', conn => {
     console.log('Connection established');
-    const client=new Client(conn);
+    const client=createClient(conn);
 
 
     conn.on('message',msg=>{
@@ -48,6 +65,8 @@ server.on('connection', conn => {
         }else if(data.type==='join-session'){
             const session=getSession(data.id) || createSession(data.id);
             session.join(client);
+
+            broadCastSession(session);
         }
         console.log('sessions',sessions);
     })
@@ -62,5 +81,7 @@ server.on('connection', conn => {
             sessions.delete(session.id);
             console.log(sessions);
         }
+
+        broadCastSession(session);
     })
 })
