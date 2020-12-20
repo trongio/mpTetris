@@ -13,7 +13,7 @@ class Session {
     }
 
     leave(client){
-        if(client.session!=this){
+        if(client.session!==this){
             throw new Error('Client not in session');
         }
         this.clients.delete(client);

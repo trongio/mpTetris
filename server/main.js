@@ -14,19 +14,42 @@ function createId(len = 6, chars = 'abcdefghjkmnopqrstvwxyz01234567890') {
     return id;
 }
 
+function createSession(id=createId()){
+    if(sessions.has(id)){
+        throw new Error(`session ${id} already exists`);
+    }
+    const session=new Session(id);
+    console.log('creating session',session);
+    sessions.set(id,session);
+    return session;
+}
+
+function getSession(id){
+    return sessions.get(id);
+}
+
 server.on('connection', conn => {
     console.log('Connection established');
     const client=new Client(conn);
 
-    conn.on('message',msg=>{
-        console.log('Message received',msg);
 
-        if (msg==='create-session'){
-            const session=new Session(createId());
+    conn.on('message',msg=>{
+        console.log('message received:',msg)
+        const data=JSON.parse(msg);
+
+        if (data.type==='create-session'){
+            const session=createSession();
             session.join(client);
-            sessions.set(session.id,session);
+            client.send({
+                type: 'session-created',
+                id: session.id,
+            });
             console.log(sessions);
+        }else if(data.type==='join-session'){
+            const session=getSession(data.id) || createSession(data.id);
+            session.join(client);
         }
+        console.log('sessions',sessions);
     })
 
     conn.on('close',()=>{
