@@ -53,11 +53,18 @@ class ConnectionManager {
 
     updateManager(peers){
         const me = peers.you;
-        const clients = peers.clients.filter(client => me !== client.id);
-        clients.forEach(client => {
-            if (!this.peers.has(client.id)) {
+        const clients = peers.clients.filter(id => me !== id);
+        clients.forEach(id => {
+            if (!this.peers.has(id)) {
                 const tetris = this.tetrisManager.createPlayer();
-                this.peers.set(client.id, tetris);
+                this.peers.set(id, tetris);
+            }
+        });
+
+        [...this.peers.entries()].forEach(([id, tetris]) => {
+            if (clients.indexOf(id)===-1) {
+                this.tetrisManager.removePlayer(tetris);
+                this.peers.delete(id);
             }
         });
     }

@@ -10,6 +10,18 @@ class Tetris
         this.arena = new Arena(12, 20);
         this.player = new Player(this);
 
+        this.player.events.listen('score', score =>{
+            this.updateScore(score);
+        });
+
+        this.player.events.listen('pos', pos =>{
+            console.log('payer pos changed to',pos);
+        });
+
+        this.player.events.listen('matrix', matrix =>{
+            console.log('payer matrix changed to',matrix);
+        });
+
         this.colors = [
             null,
             '#FF0D72',
@@ -22,17 +34,15 @@ class Tetris
         ];
 
         let lastTime = 0;
-        const update = (time = 0) => {
+        this.update = (time = 0) => {
             const deltaTime = time - lastTime;
             lastTime = time;
 
             this.player.update(deltaTime);
 
             this.draw();
-            requestAnimationFrame(update);
+            requestAnimationFrame(this.update);
         };
-        update();
-
         this.updateScore(0);
     }
 
@@ -57,6 +67,10 @@ class Tetris
                 }
             });
         });
+    }
+
+    run(){
+        this.update();
     }
 
     updateScore(score)

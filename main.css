@@ -9,14 +9,18 @@ body {
   text-align: center;
 }
 
+canvas {
+  border: solid 0.2em #646464;
+  height: 90vh;
+}
+
 .player {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 auto;
           flex: 1 1 auto;
 }
 
-canvas {
-  border: solid .2em #fff;
-  height: 90vh;
+.player.local canvas {
+  border-color: wheat;
 }
 /*# sourceMappingURL=main.css.map */
