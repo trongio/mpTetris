@@ -18,5 +18,8 @@
   "homepage": "https://github.com/trongio/mpTetris#readme",
   "dependencies": {
     "ws": "^7.4.1"
+  },
+  "engines": {
+    "node": "10.x"
   }
 }
