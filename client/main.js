@@ -9,8 +9,8 @@ connectionManager.connect('ws://localhost:9000')
 
 const keyListener = (event) => {
     [
-        [65, 68, 87, 69, 83],
-        [37, 39, 38, 73, 40],
+        [65, 68, 81, 69, 83],
+        [72, 75, 89, 73, 74],
     ].forEach((key, index) => {
         const player = localTetris.player;
         if (event.type === 'keydown') {
